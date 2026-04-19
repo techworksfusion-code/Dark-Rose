@@ -513,6 +513,7 @@ app.post('/api/contact', (req, res) => {
   try {
     const CONTACTS_FILE = path.join(__dirname, 'contacts.json');
     const newContact = {
+      id: Date.now().toString(),
       name,
       email,
       subject: subject || 'General Inquiry',
@@ -541,6 +542,35 @@ app.post('/api/contact', (req, res) => {
       message: 'We received your message but encountered an issue. Please try again later.',
       success: false
     });
+  }
+});
+
+// Admin panel - delete a contact
+app.delete('/api/contacts/:id', isAuthenticated, (req, res) => {
+  const { id } = req.params;
+
+  console.log(`[DELETE] Attempting to delete contact ${id}`);
+
+  try {
+    const CONTACTS_FILE = path.join(__dirname, 'contacts.json');
+    const data = fs.readFileSync(CONTACTS_FILE, 'utf8');
+    let contacts = JSON.parse(data);
+
+    const initialLength = contacts.length;
+    contacts = contacts.filter(c => c.id !== id);
+
+    if (contacts.length === initialLength) {
+      console.log(`[DELETE] Contact ${id} NOT found - no change made`);
+      return res.status(404).json({ error: 'Contact not found', totalContacts: contacts.length });
+    }
+
+    fs.writeFileSync(CONTACTS_FILE, JSON.stringify(contacts, null, 2));
+    console.log(`[DELETE] Contact ${id} deleted successfully. Remaining: ${contacts.length}`);
+
+    res.json({ message: 'Contact deleted successfully', remainingCount: contacts.length });
+  } catch (error) {
+    console.error('[DELETE] Error deleting contact:', error);
+    res.status(500).json({ error: 'Failed to delete contact', details: error.message });
   }
 });
 

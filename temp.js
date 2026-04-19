@@ -93,16 +93,17 @@ renderBookings(allBookings);
 
 // Render contacts table
 if(contacts.length === 0) {
-contactsBody.innerHTML = '<tr><td colspan="6" class="empty">No contacts yet</td></tr>';
+contactsBody.innerHTML = '<tr><td colspan="7" class="empty">No contacts yet</td></tr>';
 } else {
 contactsBody.innerHTML = contacts.map((c, i) => `
-<tr>
+<tr data-id="${c.id}">
 <td>${i + 1}</td>
 <td>${escapeHtml(c.name)}</td>
 <td>${escapeHtml(c.email)}</td>
 <td>${escapeHtml(c.subject)}</td>
 <td>${escapeHtml(c.message.substring(0, 80))}${c.message.length>80?'...':''}</td>
 <td><span class="timestamp">${new Date(c.timestamp).toLocaleString()}</span></td>
+<td><button class="btn-delete" onclick="deleteContact('${c.id}')" title="Delete">🗑️</button></td>
 </tr>
 `).join('');
 }
@@ -113,7 +114,7 @@ console.error('Error loading data:', error);
 errorMsg.textContent = 'Error loading data: ' + error.message;
 errorMsg.style.display = 'block';
 bookingsBody.innerHTML = '<tr><td colspan="10" class="empty">Failed to load</td></tr>';
-contactsBody.innerHTML = '<tr><td colspan="6" class="empty">Failed to load</td></tr>';
+contactsBody.innerHTML = '<tr><td colspan="7" class="empty">Failed to load</td></tr>';
 }
 }
 
@@ -401,6 +402,31 @@ loadData();
 } catch(error) {
 console.error('[FRONTEND] Delete error:', error);
 showError('Failed to delete booking: ' + error.message);
+}
+}
+
+async function deleteContact(id) {
+if(!confirm('Are you sure you want to delete this contact message?')) return;
+
+try {
+console.log('[FRONTEND] Deleting contact ID:', id);
+const res = await fetch(`/api/contacts/${id}`, {
+  method: 'DELETE',
+  credentials: 'include'
+});
+
+const result = await res.json();
+console.log('[FRONTEND] Delete contact response:', res.status, result);
+
+if(!res.ok) {
+  throw new Error(result.error || result.details || 'Failed to delete');
+}
+
+showSuccess('Contact message deleted successfully!');
+loadData();
+} catch(error) {
+console.error('[FRONTEND] Delete contact error:', error);
+showError('Failed to delete contact: ' + error.message);
 }
 }
 
