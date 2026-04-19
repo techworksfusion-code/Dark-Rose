@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - Dark Rose Tattoos</title>
+<link rel="icon" href="logo.jpeg" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#0a0a0a;
+--dark:#141414;
+--card:#1e1e1e;
+--border:#2d1f1f;
+--crimson:#9B2A2A;
+--rose:#D04040;
+--gold:#D4A84A;
+--gold-light:#F0C84B;
+--cream:#F5EDE0;
+--muted:#a89080;
+--white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--cream);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(8,8,8,0.95),transparent)}
+.nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.2em;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:0.5rem}
+.nav-logo img{height:32px;width:auto;object-fit:contain}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;letter-spacing:0.12em;margin-left:2rem;transition:color 0.3s;text-transform:uppercase}
+.nav-links a:hover{color:var(--gold)}
+.nav-book{background:var(--crimson)!important;color:var(--cream)!important;padding:0.5rem 1.2rem;border:1px solid var(--rose)!important}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:7rem 1.5rem 4rem}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,#1a1010 0%,var(--black) 60%)}
+.hero-nebula{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(139,26,26,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(212,168,74,0.06) 0%,transparent 40%),radial-gradient(ellipse at 50% 50%,rgba(208,64,64,0.05) 0%,transparent 60%)}
+.hero-stars-static{position:absolute;inset:0;background-image:radial-gradient(var(--white) 1px,transparent 1px);background-size:60px 60px;opacity:0.15}
+.hero-stars-twinkle{position:absolute;inset:0;background-image:radial-gradient(var(--cream) 1.5px,transparent 1.5px);background-size:100px 100px;opacity:0.2;animation:twinkle 4s ease-in-out infinite}
+.hero-stars-distant{position:absolute;inset:0;background-image:radial-gradient(var(--gold-light) 1px,transparent 1px);background-size:150px 150px;opacity:0.1;animation:starsFloat 40s linear infinite reverse}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:700px}
+.hero-badge{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.4em;color:var(--gold);text-transform:uppercase;margin-bottom:1.2rem;display:block}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:0.95;color:var(--white);margin-bottom:0.3rem;text-shadow:0 0 30px rgba(139,26,26,0.2)}
+.hero-title em{color:var(--rose);font-style:italic}
+.hero-sub{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.5em;color:var(--gold);text-transform:uppercase;margin:1.2rem 0 2.2rem;opacity:0.8}
+.hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:500px;margin:0 auto 2.5rem;font-weight:300}
+.btn-primary{display:inline-block;padding:0.9rem 2.5rem;background:var(--crimson);color:var(--cream);text-decoration:none;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;border:1px solid var(--rose);transition:all 0.3s;cursor:pointer}
+.btn-primary:hover{background:var(--rose);transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,57,43,0.4)}
+.btn-outline{display:inline-block;padding:0.9rem 2.5rem;background:transparent;color:var(--gold);text-decoration:none;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;border:1px solid var(--gold);transition:all 0.3s;margin-left:1rem;cursor:pointer}
+.btn-outline:hover{background:rgba(200,151,42,0.1)}
+
+/* DIVIDER */
+.divider{text-align:center;padding:1.5rem;color:var(--crimson);font-size:1.5rem;letter-spacing:0.5em}
+
+/* ABOUT CONTENT */
+#about{padding:6rem 1.5rem;max-width:1000px;margin:0 auto}
+.about-intro{text-align:center;margin-bottom:4rem}
+.about-intro p{font-size:1.1rem;line-height:1.9;color:var(--muted);max-width:700px;margin:0 auto}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.value-card{background:var(--card);border:1px solid var(--border);padding:2rem;text-align:center;transition:border-color 0.3s}
+.value-card:hover{border-color:var(--crimson)}
+.value-icon{font-size:2.5rem;margin-bottom:1rem}
+.value-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--white);margin-bottom:0.8rem}
+.value-desc{font-size:0.95rem;line-height:1.7;color:var(--muted)}
+
+.story-section{margin-top:5rem}
+.story-title{font-family:'Playfair Display',serif;font-size:2rem;color:var(--white);margin-bottom:1.5rem;text-align:center}
+.story-title em{color:var(--rose);font-style:italic}
+.story-content{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.story-text p{font-size:1rem;line-height:1.9;color:var(--muted);margin-bottom:1.2rem}
+.story-image{background:var(--card);border:1px solid var(--border);height:400px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.story-image img{width:100%;height:100%;object-fit:cover}
+.story-image::before{content:'Est. 2010';position:absolute;top:1rem;left:1rem;background:var(--crimson);color:var(--cream);padding:0.4rem 0.8rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase}
+
+.artist-section{margin-top:5rem}
+.artist-card{background:var(--card);border:1px solid var(--border);display:grid;grid-template-columns:300px 1fr;margin-top:2rem}
+.artist-img{height:100%;min-height:400px;background:#111}
+.artist-img img{width:100%;height:100%;object-fit:cover}
+.artist-info{padding:2.5rem;display:flex;flex-direction:column;justify-content:center}
+.artist-name{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--white);margin-bottom:0.5rem}
+.artist-role{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem}
+.artist-bio{font-size:1rem;line-height:1.9;color:var(--muted);margin-bottom:1.5rem}
+.artist-stats{display:flex;gap:2rem;margin-top:1rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.artist-stat-num{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);display:block}
+.artist-stat-label{font-size:0.65rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--border);padding:3rem 2rem 1.5rem}
+.footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2rem}
+.footer-brand{display:flex;flex-direction:column;gap:0.5rem}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;letter-spacing:0.2em;color:var(--gold)}
+.footer-tagline{color:var(--muted);font-size:0.9rem}
+.footer-location{color:var(--muted);font-size:0.85rem;opacity:0.7}
+.footer-column h4{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem}
+.footer-column a{display:block;color:var(--muted);text-decoration:none;font-size:0.9rem;margin-bottom:0.5rem;transition:color 0.3s}
+.footer-column a:hover{color:var(--cream)}
+.footer-column span{display:block;color:var(--muted);font-size:0.9rem;margin-bottom:0.4rem}
+.footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;text-align:center}
+.footer-bottom p{color:var(--muted);font-size:0.8rem;margin-bottom:0.3rem}
+.footer-legal{font-size:0.75rem;opacity:0.6}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes starsFloat{0%{background-position:0 0}100%{background-position:150px 150px}}
+@keyframes twinkle{0%,100%{opacity:0.3}50%{opacity:1}}
+
+@media(max-width:768px){
+nav{padding:0.8rem 1.2rem}
+.nav-logo img{height:28px}
+.nav-links a{margin-left:1.5rem;font-size:0.8rem}
+#hero{padding:6rem 1.2rem 3rem}
+.story-content{grid-template-columns:1fr}
+.artist-card{grid-template-columns:1fr}
+.footer-content{grid-template-columns:1fr;gap:2rem;text-align:center}
+footer{padding:2rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+<a href="darkrose-tattoos.html" class="nav-logo">
+<img src="logo.jpeg" alt="Dark Rose Tattoos">
+</a>
+  <div class="nav-links">
+  <a href="darkrose-tattoos.html">Home</a>
+  <a href="#about">About</a>
+  <a href="contact-us.html">Contact</a>
+  <a href="/admin" target="_blank">Admin</a>
+  <a href="darkrose-tattoos.html#booking" class="nav-book">Book Now</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero">
+<div class="hero-bg"></div>
+<div class="hero-nebula"></div>
+<div class="hero-stars-static"></div>
+<div class="hero-stars-twinkle"></div>
+<div class="hero-stars-distant"></div>
+<div class="hero-content">
+<span class="hero-badge">Our Story</span>
+<h1 class="hero-title">About <em>Dark Rose</em></h1>
+<p class="hero-sub">A Legacy of Art & Devotion</p>
+<p class="hero-desc">Crafting sacred and personal tattoos with meticulous attention to detail, using only premium inks and unwavering commitment to hygiene.</p>
+<div class="hero-ctas">
+<a href="#story" class="btn-primary">Our Story</a>
+<a href="darkrose-tattoos.html#booking" class="btn-outline">Book Appointment</a>
+</div>
+</div>
+</section>
+
+<!-- Divider -->
+<p class="divider">— ✦ —</p>
+
+<!-- About Content -->
+<section id="about">
+<div class="about-intro">
+<p>Dark Rose Tattoos is more than a studio—it's a sanctuary where art meets spirituality. Established in 2019 in Gaya, Bihar, we have dedicated ourselves to the craft of custom blackwork, neotraditional, and gothic rose tattoos, with a special focus on Lord Shiva-themed designs that resonate with devotion and artistic integrity.</p>
+</div>
+
+<!-- Values -->
+<div class="card-grid">
+<div class="value-card">
+<div class="value-icon">🎨</div>
+<div class="value-title">Artistry First</div>
+<div class="value-desc">Every tattoo is a unique creation tailored to you. We never replicate—we always originate.</div>
+</div>
+<div class="value-card">
+<div class="value-icon">🛡️</div>
+<div class="value-title">Sterilization</div>
+<div class="value-desc">Single-use needles, autoclaved equipment, and hospital-grade sanitation protocols.</div>
+</div>
+<div class="value-card">
+<div class="value-icon">✨</div>
+<div class="value-title">Premium Inks</div>
+<div class="value-desc">Only the highest quality vegan-friendly, international-grade tattoo inks.</div>
+</div>
+<div class="value-card">
+<div class="value-icon">🙏</div>
+<div class="value-title">Sacred Approach</div>
+<div class="value-desc">We honor the spiritual significance of tattoos, especially in Hindu traditions.</div>
+</div>
+</div>
+
+<!-- Story -->
+<div class="story-section" id="story">
+<h2 class="story-title">The <em>Journey</em></h2>
+<div class="story-content">
+<div class="story-text">
+<p>Dark Rose Tattoos began as a passion project in 2019, born from a deep appreciation for both tattoo artistry and Hindu spiritual iconography. The founder, having studied traditional Indian art forms alongside modern tattooing techniques, saw an opportunity to bridge sacred imagery with contemporary tattoo culture.</p>
+<p>Specializing in Lord Shiva designs—from Nataraja to Ardhanarishvara, from Trishula to the sacred Lingam—we approach each piece with reverence. Our blackwork and dotwork techniques honor the gravity of these symbols while delivering stunning visual impact.</p>
+<p>Over 500+ custom designs later, we've attracted clients from across India and abroad, each seeking not just a tattoo but a meaningful piece of art that carries personal and spiritual weight.</p>
+</div>
+<div class="story-image">
+<img src="logo.jpeg" alt="Dark Rose Studio">
+</div>
+</div>
+</div>
+
+<!-- Artist -->
+<div class="artist-section">
+<h2 class="story-title">The <em>Artist</em></h2>
+<div class="artist-card">
+<div class="artist-img">
+<img src="artist.jpg" alt="Tattoo Artist">
+</div>
+<div class="artist-info">
+<div class="artist-name">Dark Rose</div>
+<div class="artist-role">Master Tattoo Artist & Founder</div>
+<div class="artist-bio">
+<p>With over 8 years of experience in tattooing, Pushkar has developed a signature style that blends traditional Indian motifs with modern blackwork and dotwork techniques. Certified in bloodborne pathogen protocols and advanced sterilization, his work appears in tattoo conventions across India.</p>
+<p>His deep understanding of Hindu iconography—particularly Lord Shiva's myriad forms—allows him to create tattoos that are both visually striking and spiritually authentic.</p>
+</div>
+<div class="artist-stats">
+<div><span class="artist-stat-num">500+</span><span class="artist-stat-label">Designs Created</span></div>
+<div><span class="artist-stat-num">8</span><span class="artist-stat-label">Years Experience</span></div>
+<div><span class="artist-stat-num">100%</span><span class="artist-stat-label">Custom Work</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer>
+<div class="footer-content">
+<div class="footer-brand">
+<span class="footer-logo">Dark Rose Tattoos</span>
+<p class="footer-tagline">Premium Custom Tattoo Studio</p>
+<p class="footer-location">✦ Gaya, Bihar, India ✦</p>
+</div>
+<div class="footer-column">
+<h4>Studio</h4>
+<a href="darkrose-tattoos.html">Home</a>
+<a href="#about">About</a>
+<a href="darkrose-tattoos.html#portfolio">Portfolio</a>
+<a href="darkrose-tattoos.html#booking">Book Now</a>
+</div>
+<div class="footer-column">
+<h4>Connect</h4>
+<a href="#">Instagram</a>
+<a href="#">WhatsApp</a>
+<a href="tel:+91XXXXXXXXXX">Call</a>
+</div>
+<div class="footer-column">
+<h4>Hours</h4>
+<span>Mon – Sat: 11 AM – 9 PM</span>
+<span>Sunday: Closed</span>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 Dark Rose Tattoos. All rights reserved.</p>
+<p class="footer-legal">Strictly 18+ | Sterilized Equipment | Premium Inks</p>
+</div>
+</footer>
+
+</body>
+</html>

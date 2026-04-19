@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel - Dark Rose Tattoos</title>
+<link rel="icon" href="logo.jpeg" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0a0a0a;
+--card:#1a1a1a;
+--border:#2d1f1f;
+--crimson:#9B2A2A;
+--rose:#D04040;
+--gold:#D4A84A;
+--cream:#F5EDE0;
+--muted:#888;
+--text:#ccc;
+--danger:#dc3545;
+--success:#28a745;
+--warning:#ffc107;
+}
+body{background:var(--bg);color:var(--cream);font-family:'Inter',sans-serif;min-height:100vh;padding:2rem}
+
+.billing-banner{background:rgba(255,193,7,0.15);border:1px solid var(--warning);padding:1rem 1.5rem;margin-bottom:1.5rem;border-radius:8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.billing-banner.warning{background:rgba(255,193,7,0.15);border-color:var(--warning)}
+.billing-banner.danger{background:rgba(255,152,0,0.15);border-color:orange}
+.billing-banner.critical{background:rgba(220,53,69,0.15);border-color:var(--danger)}
+.billing-banner-text{color:var(--cream);font-size:0.95rem;flex:1}
+.billing-banner-text strong{color:var(--warning)}
+.billing-banner .upgrade-btn{background:var(--gold);color:var(--bg);border:none;padding:0.5rem 1rem;border-radius:4px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.3rem;font-size:0.85rem}
+.billing-banner .upgrade-btn:hover{background:#c49a3d}
+.notif-remaining{color:var(--gold);font-weight:bold;font-size:1.1rem;margin-left:0.3rem}
+body.premium-lock{overflow:hidden}
+body.premium-lock .container{filter:blur(8px);pointer-events:none;user-select:none}
+.premium-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:9999;padding:2rem}
+.premium-overlay.active{display:flex}
+.premium-box{background:linear-gradient(135deg,#1a1a1a 0%,#2d1f1f 100%);border:2px solid var(--gold);max-width:500px;padding:2.5rem;text-align:center;border-radius:12px;box-shadow:0 0 60px rgba(212,168,74,0.3)}
+.premium-icon{font-size:4rem;margin-bottom:1rem}
+.premium-title{color:var(--gold);font-size:1.8rem;margin-bottom:1rem;font-weight:600}
+.premium-message{color:var(--text);font-size:1.1rem;line-height:1.6;margin-bottom:1.5rem}
+.premium-contact{background:rgba(212,168,74,0.1);border:1px solid var(--gold);padding:1rem;border-radius:8px;margin-top:1rem}
+.premium-contact strong{color:var(--gold)}
+
+.container{max-width:1400px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.header h1{font-size:1.5rem;color:var(--gold)}
+.header a{color:var(--muted);text-decoration:none;font-size:0.9rem}
+.header a:hover{color:var(--cream)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--card);border:1px solid var(--border);padding:1.5rem;text-align:center}
+.stat-num{font-size:2rem;font-weight:600;color:var(--gold);display:block}
+.stat-label{font-size:0.85rem;color:var(--muted);margin-top:0.5rem}
+
+.controls{display:flex;gap:1rem;margin-bottom:1rem;align-items:center;flex-wrap:wrap}
+.filter-select{background:var(--card);color:var(--cream);border:1px solid var(--border);padding:0.5rem 1rem;border-radius:4px;cursor:pointer}
+.filter-select:focus{outline:none;border-color:var(--crimson)}
+
+.table-container{background:var(--card);border:1px solid var(--border);overflow-x:auto;margin-bottom:2rem}
+table{width:100%;border-collapse:collapse;font-size:0.85rem}
+thead{background:rgba(139,26,26,0.1)}
+th{padding:0.8rem;text-align:left;font-weight:500;color:var(--gold);border-bottom:1px solid var(--border);white-space:nowrap}
+td{padding:0.8rem;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+tr:hover{background:rgba(139,26,26,0.05)}
+
+.btn{display:inline-flex;align-items:center;gap:0.3rem;padding:0.35rem 0.7rem;border:none;border-radius:3px;cursor:pointer;font-size:0.75rem;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-edit{background:var(--gold);color:var(--bg)}
+.btn-edit:hover{background:var(--gold-light)}
+.btn-delete{background:var(--danger);color:var(--cream)}
+.btn-delete:hover{background:#c82333}
+.btn-view{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-view:hover{background:var(--border)}
+
+.empty{text-align:center;padding:3rem;color:var(--muted)}
+.refresh-btn{background:var(--crimson);color:var(--cream);border:none;padding:0.5rem 1rem;border-radius:4px;cursor:pointer;font-size:0.85rem}
+.refresh-btn:hover{background:var(--rose)}
+
+.timestamp{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--muted)}
+.loading{text-align:center;padding:2rem;color:var(--muted)}
+.error{background:rgba(220,53,69,0.1);border:1px solid var(--danger);padding:1rem;margin-bottom:1rem;color:var(--danger)}
+.success{background:rgba(40,167,69,0.1);border:1px solid var(--success);padding:1rem;margin-bottom:1rem;color:var(--success)}
+
+.status-badge{display:inline-block;padding:0.2rem 0.5rem;border-radius:3px;font-size:0.7rem;font-weight:500;text-transform:uppercase}
+.status-pending{background:var(--warning);color:#000}
+.status-confirmed{background:var(--success);color:#fff}
+.status-cancelled{background:var(--danger);color:#fff}
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-backdrop.active{display:flex}
+.modal{background:var(--card);border:1px solid var(--border);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;padding:2rem;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer}
+.modal-close:hover{color:var(--cream)}
+.modal-title{font-size:1.2rem;color:var(--gold);margin-bottom:1.5rem}
+
+/* Confirm Modal */
+.confirm-datetime{display:flex;gap:1rem}
+.confirm-datetime .form-group{flex:1}
+.form-group input[type="date"],.form-group input[type="time"]{background:var(--bg);border:1px solid var(--border);color:var(--cream);padding:0.6rem 0.8rem;font-size:0.9rem;border-radius:3px;font-family:'Inter',sans-serif}
+.form-group input[type="date"]::-webkit-calendar-picker-indicator,.form-group input[type="time"]::-webkit-calendar-picker-indicator{filter:invert(1);cursor:pointer}
+.confirm-details{background:var(--bg);border:1px solid var(--border);padding:1rem;margin-bottom:1rem;border-radius:4px}
+.confirm-details-row{display:flex;justify-content:space-between;margin-bottom:0.5rem;font-size:0.85rem}
+.confirm-details-row:last-child{margin-bottom:0}
+.confirm-details-label{color:var(--muted)}
+.confirm-details-value{color:var(--cream);font-weight:500}
+
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:0.75rem;color:var(--gold);margin-bottom:0.3rem;text-transform:uppercase;letter-spacing:0.05em}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--cream);padding:0.6rem 0.8rem;font-size:0.9rem;border-radius:3px}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--crimson)}
+.form-group textarea{height:80px;resize:vertical}
+.form-actions{display:flex;gap:0.8rem;margin-top:1.5rem}
+
+.delete-confirm p{color:var(--muted);margin-bottom:1rem}
+
+@media(max-width:768px){
+.container{padding:1rem}
+th,td{padding:0.5rem}
+.stats{grid-template-columns:1fr 1fr}
+.controls{flex-direction:column;align-items:stretch}
+.table-container{overflow-x:auto}
+}
+
+/* Login Screen */
+.login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:2000}
+.login-box{background:var(--card);border:1px solid var(--border);padding:2.5rem;width:100%;max-width:360px;text-align:center}
+.login-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.2em;color:var(--gold);margin-bottom:0.5rem}
+.login-title{color:var(--cream);font-size:1.2rem;margin-bottom:1.5rem}
+.login-box .form-group{text-align:left}
+.login-btn{width:100%;background:var(--crimson);color:var(--cream);border:none;padding:0.8rem;font-size:0.9rem;border-radius:4px;cursor:pointer;margin-top:0.5rem}
+.login-btn:hover{background:var(--rose)}
+.login-error{color:var(--danger);font-size:0.85rem;margin-top:0.8rem;min-height:1.2rem}
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <div class="login-logo">✦ Dark Rose Tattoos ✦</div>
+    <div class="login-title">Admin Login</div>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="username" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+      </div>
+      <div id="loginError" class="login-error"></div>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+  </div>
+</div>
+
+<!-- Premium Lock Overlay -->
+<div id="premiumOverlay" class="premium-overlay">
+  <div class="premium-box">
+    <div class="premium-icon">🏆</div>
+    <div class="premium-title">UPGRADE TO PREMIUM</div>
+    <div class="premium-message">
+      You have reached your free WhatsApp notification limit (5 notifications).<br><br>
+      Upgrade to Premium from <strong>Fusion Tech Works</strong> to unlock unlimited notifications and exclusive features!
+    </div>
+    <div class="premium-contact">
+      <strong>Contact Fusion Tech Works to upgrade today!</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div id="mainContent" class="container" style="display:none">
+<div id="billingBanner"></div>
+<div class="header">
+<h1>Dark Rose Admin</h1>
+<div>
+<a href="darkrose-tattoos.html">← Back to Site</a>
+<a href="#" onclick="logout()" style="margin-left:1rem">Logout</a>
+</div>
+</div>
+
+<div class="stats" id="stats">
+<div class="stat-card"><span class="stat-num" id="totalBookings">0</span><span class="stat-label">Total Bookings</span></div>
+<div class="stat-card"><span class="stat-num" id="totalContacts">0</span><span class="stat-label">Total Contacts</span></div>
+</div>
+
+<div id="errorMsg" class="error" style="display:none"></div>
+<div id="successMsg" class="success" style="display:none"></div>
+
+<div class="controls">
+<label style="font-size:0.85rem;color:var(--muted)">Filter by Status:</label>
+<select id="statusFilter" class="filter-select" onchange="filterBookings()">
+<option value="all">All</option>
+<option value="pending">Pending</option>
+<option value="confirmed">Confirmed</option>
+<option value="cancelled">Cancelled</option>
+</select>
+<button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+</div>
+
+<h2 style="color:var(--gold);margin-bottom:1rem;font-size:1.1rem">Bookings Management</h2>
+<div class="table-container">
+<table id="bookingsTable">
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Design</th>
+<th>Budget</th>
+<th>Placement</th>
+<th>Status</th>
+<th>Visit</th>
+<th>Actions</th>
+<th>Submitted</th>
+</tr>
+</thead>
+<tbody id="bookingsBody">
+<tr><td colspan="10" class="loading">Loading bookings...</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2 style="color:var(--gold);margin:2rem 0 1rem;font-size:1.1rem">Recent Contact Messages</h2>
+<div class="table-container">
+<table id="contactsTable">
+<thead>
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Email</th>
+<th>Subject</th>
+<th>Message</th>
+<th>Submitted</th>
+</tr>
+</thead>
+<tbody id="contactsBody">
+<tr><td colspan="6" class="loading">Loading contacts...</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-backdrop" id="editModal">
+<div class="modal">
+<button class="modal-close" onclick="closeEditModal()">&times;</button>
+<h2 class="modal-title">Edit Booking</h2>
+<form id="editForm">
+<input type="hidden" id="editId">
+<div class="form-group">
+<label for="editName">Name *</label>
+<input type="text" id="editName" required>
+</div>
+<div class="form-group">
+<label for="editPhone">Phone *</label>
+<input type="tel" id="editPhone" required>
+</div>
+<div class="form-group">
+<label for="editDesign">Design *</label>
+<select id="editDesign" required>
+<option value="">Select Design</option>
+</select>
+</div>
+<div class="form-group">
+<label for="editBudget">Budget</label>
+<select id="editBudget">
+<option value="">Select Budget</option>
+<option value="₹2,500-₹3,500">₹2,500 - ₹3,500</option>
+<option value="₹3,500-₹5,000">₹3,500 - ₹5,000</option>
+<option value="₹5,000-₹7,000">₹5,000 - ₹7,000</option>
+<option value="₹7,000+">₹7,000+</option>
+</select>
+</div>
+<div class="form-group">
+<label for="editPlacement">Placement</label>
+<select id="editPlacement">
+<option value="">Select Placement</option>
+<option value="Forearm">Forearm</option>
+<option value="Upper Arm">Upper Arm</option>
+<option value="Bicep">Bicep</option>
+<option value="Shoulder">Shoulder</option>
+<option value="Back">Back</option>
+<option value="Chest">Chest</option>
+<option value="Leg">Leg</option>
+<option value="Ankle">Ankle</option>
+<option value="Wrist">Wrist</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div class="form-group">
+<label for="editStatus">Status</label>
+<select id="editStatus">
+<option value="pending">Pending</option>
+<option value="confirmed">Confirmed</option>
+<option value="cancelled">Cancelled</option>
+</select>
+</div>
+<div class="form-group">
+<label for="editNotes">Notes</label>
+<textarea id="editNotes"></textarea>
+</div>
+<div class="form-actions">
+<button type="submit" class="btn btn-edit">✓ Save Changes</button>
+<button type="button" class="btn btn-delete" onclick="openDeleteModalFromEdit()">🗑 Delete</button>
+<button type="button" class="btn btn-view" onclick="closeEditModal()">Cancel</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-backdrop" id="deleteModal">
+<div class="modal">
+<button class="modal-close" onclick="closeDeleteModal()">&times;</button>
+<h2 class="modal-title" style="color:var(--danger)">Confirm Delete</h2>
+<div class="delete-confirm">
+<p>Are you sure you want to delete this booking? This action cannot be undone.</p>
+<p id="deleteTargetName" style="font-weight:600;color:var(--cream);margin-bottom:1rem"></p>
+<div class="form-actions">
+<button class="btn btn-delete" onclick="deleteBooking()">Yes, Delete</button>
+<button class="btn btn-view" onclick="closeDeleteModal()">Cancel</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Confirm DateTime Modal -->
+<div class="modal-backdrop" id="confirmModal">
+<div class="modal">
+<button class="modal-close" onclick="closeConfirmModal()">&times;</button>
+<h2 class="modal-title">Confirm Booking</h2>
+<div class="confirm-details">
+<div class="confirm-details-row">
+<span class="confirm-details-label">Customer:</span>
+<span class="confirm-details-value" id="confirmCustomerName">-</span>
+</div>
+<div class="confirm-details-row">
+<span class="confirm-details-label">Design:</span>
+<span class="confirm-details-value" id="confirmDesign">-</span>
+</div>
+<div class="confirm-details-row">
+<span class="confirm-details-label">Phone:</span>
+<span class="confirm-details-value" id="confirmPhone">-</span>
+</div>
+</div>
+<form id="confirmForm">
+<input type="hidden" id="confirmId">
+<div class="confirm-datetime">
+<div class="form-group">
+<label for="confirmDate">Select Date</label>
+<input type="date" id="confirmDate" required>
+</div>
+<div class="form-group">
+<label for="confirmTime">Select Time</label>
+<input type="time" id="confirmTime" required>
+</div>
+</div>
+<div class="form-actions">
+<button type="submit" class="btn btn-edit">Send Confirmation</button>
+<button type="button" class="btn btn-view" onclick="closeConfirmModal()">Cancel</button>
+</div>
+</form>
+</div>
+</div>
+
+<script>
+let allBookings = [];
+let deleteTargetId = null;
+let designs = [];
+
+async function loadData() {
+  const bookingsBody = document.getElementById('bookingsBody');
+  const contactsBody = document.getElementById('contactsBody');
+  const errorMsg = document.getElementById('errorMsg');
+  try {
+    const [bookingsRes, contactsRes, designsRes] = await Promise.all([
+      fetch('/api/bookings', { credentials: 'include' }),
+      fetch('/api/contacts', { credentials: 'include' }),
+      fetch('/api/designs')
+    ]);
+    if(!bookingsRes.ok) throw new Error('Failed to load bookings');
+    if(!contactsRes.ok) throw new Error('Failed to load contacts');
+    allBookings = await bookingsRes.json();
+    const contacts = await contactsRes.json();
+    designs = await designsRes.json();
+    document.getElementById('totalBookings').textContent = allBookings.length;
+    try {
+      const billingRes = await fetch('/api/billing-summary', { credentials: 'include' });
+      if (billingRes.ok) {
+        const billing = await billingRes.json();
+        document.getElementById('totalContacts').textContent = billing.totalContacted || 0;
+      }
+    } catch (err) {
+      document.getElementById('totalContacts').textContent = 0;
+    }
+    renderBookings(allBookings);
+    if(contacts.length === 0) {
+      contactsBody.innerHTML = '<tr><td colspan="6" class="empty">No contacts yet</td></tr>';
+    } else {
+      contactsBody.innerHTML = contacts.map((c, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${escapeHtml(c.name)}</td>
+          <td>${escapeHtml(c.email)}</td>
+          <td>${escapeHtml(c.subject)}</td>
+          <td>${escapeHtml(c.message.substring(0, 80))}${c.message.length>80?'...':''}</td>
+          <td><span class="timestamp">${new Date(c.timestamp).toLocaleString()}</span></td>
+        </tr>`).join('');
+    }
+    errorMsg.style.display = 'none';
+  } catch(error) {
+    errorMsg.textContent = 'Error loading data: ' + error.message;
+    errorMsg.style.display = 'block';
+    bookingsBody.innerHTML = '<tr><td colspan="9" class="empty">Failed to load</td></tr>';
+  }
+}
+
+function renderBookings(bookings) {
+  const bookingsBody = document.getElementById('bookingsBody');
+  if(bookings.length === 0) {
+    bookingsBody.innerHTML = '<tr><td colspan="9" class="empty">No bookings yet</td></tr>';
+  } else {
+    bookingsBody.innerHTML = bookings.map((b, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${escapeHtml(b.name)}</td>
+        <td>${escapeHtml(b.phone)}</td>
+        <td>${escapeHtml(b.design)}</td>
+        <td>${escapeHtml(b.budget || '-')}</td>
+        <td>${escapeHtml(b.placement || '-')}</td>
+        <td><span class="status-badge status-${b.status || 'pending'}">${b.status || 'pending'}</span></td>
+        <td>${b.visitDate ? escapeHtml(b.visitDate) + ' ' + escapeHtml(b.visitTime || '') : '-'}</td>
+        <td>
+          <button class="btn btn-view" onclick="viewBooking('${b.id}')">View</button>
+          <button class="btn btn-edit" onclick="openEditModal('${b.id}')">Edit</button>
+          <button class="btn btn-delete" onclick="openDeleteModal('${b.id}')">Delete</button>
+        </td>
+        <td><span class="timestamp">${new Date(b.timestamp).toLocaleString()}</span></td>
+      </tr>`).join('');
+  }
+}
+
+function filterBookings() {
+  const filter = document.getElementById('statusFilter').value;
+  if(filter === 'all') {
+    renderBookings(allBookings);
+  } else {
+    const filtered = allBookings.filter(b => b.status === filter);
+    renderBookings(filtered);
+  }
+}
+
+function escapeHtml(text) {
+  if(!text) return '-';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errorEl = document.getElementById('loginError');
+  
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+      credentials: 'include'
+    });
+    
+    if (res.ok) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      loadData();
+      checkBillingSummary();
+    } else {
+      const data = await res.json();
+      errorEl.textContent = data.error || 'Invalid credentials';
+    }
+} catch (err) {
+    errorEl.textContent = 'Connection error';
+  }
+}
+
+let currentBooking = null;
+
+function openEditModal(id) {
+  currentBooking = allBookings.find(b => b.id === id);
+  if(!currentBooking) return;
+  populateEditModal(currentBooking);
+  document.getElementById('editModal').classList.add('active');
+}
+
+function populateEditModal(booking) {
+  document.getElementById('editId').value = booking.id;
+  document.getElementById('editName').value = booking.name || '';
+  document.getElementById('editPhone').value = booking.phone || '';
+  const designSelect = document.getElementById('editDesign');
+  designSelect.innerHTML = '';
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = 'Select Design';
+  designSelect.appendChild(defaultOption);
+  designs.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.name;
+    opt.textContent = d.name;
+    if (d.name === booking.design) opt.selected = true;
+    designSelect.appendChild(opt);
+  });
+  document.getElementById('editBudget').value = booking.budget || '';
+  document.getElementById('editPlacement').value = booking.placement || '';
+  document.getElementById('editStatus').value = booking.status || 'pending';
+  document.getElementById('editNotes').value = booking.notes || '';
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('active');
+  currentBooking = null;
+}
+
+function openDeleteModal(id) {
+  deleteTargetId = id;
+  const booking = allBookings.find(b => b.id === id);
+  document.getElementById('deleteTargetName').textContent = booking ? booking.name + ' - ' + booking.design : '';
+  document.getElementById('deleteModal').classList.add('active');
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('active');
+  deleteTargetId = null;
+}
+
+let confirmTargetId = null;
+
+function openConfirmModal(id) {
+  confirmTargetId = id;
+  const booking = allBookings.find(b => b.id === id);
+  if (!booking) return;
+  document.getElementById('confirmId').value = id;
+  document.getElementById('confirmCustomerName').textContent = booking.name || '-';
+  document.getElementById('confirmDesign').textContent = booking.design || '-';
+  document.getElementById('confirmPhone').textContent = booking.phone || '-';
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+  const currentTime = now.toTimeString().slice(0, 5);
+  document.getElementById('confirmDate').value = today;
+  document.getElementById('confirmTime').value = currentTime;
+  document.getElementById('confirmModal').classList.add('active');
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.remove('active');
+  confirmTargetId = null;
+}
+
+let pendingStatusChange = null;
+
+async function saveBooking(e) {
+  e.preventDefault();
+  const id = document.getElementById('editId').value;
+  const newStatus = document.getElementById('editStatus').value;
+  const booking = allBookings.find(b => b.id === id);
+  
+  // If changing status to confirmed, show date/time picker first
+  if (newStatus === 'confirmed' && booking && booking.status !== 'confirmed') {
+    pendingStatusChange = { id: id, data: {
+      name: document.getElementById('editName').value,
+      phone: document.getElementById('editPhone').value,
+      design: document.getElementById('editDesign').value,
+      budget: document.getElementById('editBudget').value,
+      placement: document.getElementById('editPlacement').value,
+      status: 'confirmed',
+      notes: document.getElementById('editNotes').value
+    }};
+    // Show confirm modal with booking details
+    document.getElementById('confirmId').value = id;
+    document.getElementById('confirmCustomerName').textContent = booking.name || '-';
+    document.getElementById('confirmDesign').textContent = booking.design || '-';
+    document.getElementById('confirmPhone').textContent = booking.phone || '-';
+    const now = new Date();
+    document.getElementById('confirmDate').value = now.toISOString().split('T')[0];
+    document.getElementById('confirmTime').value = now.toTimeString().slice(0, 5);
+    document.getElementById('confirmModal').classList.add('active');
+    return;
+  }
+  
+  // Normal save for non-confirm status changes
+  const updatedData = {
+    name: document.getElementById('editName').value,
+    phone: document.getElementById('editPhone').value,
+    design: document.getElementById('editDesign').value,
+    budget: document.getElementById('editBudget').value,
+    placement: document.getElementById('editPlacement').value,
+    status: newStatus,
+    notes: document.getElementById('editNotes').value
+  };
+  try {
+    const res = await fetch('/api/bookings/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedData),
+      credentials: 'include'
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.error || 'Failed to update');
+    closeEditModal();
+    loadData();
+  } catch(error) {
+    alert('Error: ' + error.message);
+  }
+}
+
+async function deleteBooking() {
+  if(!deleteTargetId) return;
+  try {
+    const res = await fetch('/api/bookings/' + deleteTargetId, {
+      method: 'DELETE',
+      credentials: 'include'
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.error || 'Failed to delete');
+    closeDeleteModal();
+    loadData();
+  } catch(error) {
+    alert('Error: ' + error.message);
+  }
+}
+
+async function sendConfirmation(e) {
+  e.preventDefault();
+  const visitDate = document.getElementById('confirmDate').value;
+  const visitTime = document.getElementById('confirmTime').value;
+  if (!visitDate || !visitTime) {
+    alert('Please select both date and time');
+    return;
+  }
+  
+  let updatedData;
+  let bookingId;
+  
+  if (pendingStatusChange) {
+    // Called from Edit modal when changing to confirmed
+    bookingId = pendingStatusChange.id;
+    updatedData = { ...pendingStatusChange.data, visitDate: visitDate, visitTime: visitTime };
+    pendingStatusChange = null;
+  } else {
+    // Direct confirm from Confirm button
+    bookingId = document.getElementById('confirmId').value;
+    updatedData = { status: 'confirmed', visitDate: visitDate, visitTime: visitTime };
+  }
+  
+  try {
+    const res = await fetch('/api/bookings/' + bookingId, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedData),
+      credentials: 'include'
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.error || 'Failed to confirm');
+    closeConfirmModal();
+    closeEditModal();
+    loadData();
+  } catch(error) {
+    alert('Error: ' + error.message);
+  }
+}
+
+function viewBooking(id) {
+  const booking = allBookings.find(b => b.id === id);
+  if(booking) {
+    alert('Booking Details:\n\nName: ' + booking.name + '\nPhone: ' + booking.phone + '\nDesign: ' + booking.design + '\nBudget: ' + (booking.budget || 'Not set') + '\nPlacement: ' + (booking.placement || 'Not set') + '\nStatus: ' + (booking.status || 'pending') + '\nNotes: ' + (booking.notes || 'None') + '\n\nSubmitted: ' + new Date(booking.timestamp).toLocaleString());
+  }
+}
+
+function showSuccess(msg) {
+  const el = document.getElementById('successMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 3000);
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 5000);
+}
+
+function showBillingBanner(billing) {
+  const bannerEl = document.getElementById('billingBanner');
+  const fusionWA = billing.fusionWA || 'wa.me/91XXXXXXXXXX';
+  let html = '';
+  if (billing.totalDue >= 50) {
+    html = '<div class="billing-banner critical"><div class="billing-banner-text">💰 <strong>Extra charges this month: ₹' + billing.totalDue + '</strong>. Upgrade to Business plan at ₹999/month and save money!</div><a href="' + fusionWA + '" target="_blank" class="upgrade-btn">Upgrade Now →</a></div>';
+  } else if (billing.freeRemaining === 0) {
+    html = '<div class="billing-banner danger"><div class="billing-banner-text">🔥 <strong>Daily limit reached.</strong> Extra messages are being charged at ₹5 each. Total due: ₹' + billing.totalDue + '</div><a href="' + fusionWA + '" target="_blank" class="upgrade-btn">Upgrade Now →</a></div>';
+  } else if (billing.freeRemaining <= 3) {
+    html = '<div class="billing-banner warning"><div class="billing-banner-text">⚠️ <span id="notifRemaining">' + billing.freeRemaining + '</span> free notifications remaining today. Upgrade to avoid extra charges.</div><a href="' + fusionWA + '" target="_blank" class="upgrade-btn">Upgrade Now →</a></div>';
+  }
+  bannerEl.innerHTML = html;
+}
+
+function updateNotificationCount(count) {
+  const el = document.getElementById('notifRemaining');
+  if (el) el.textContent = count;
+}
+
+async function checkBillingSummary() {
+  try {
+    const res = await fetch('/api/billing-summary', { credentials: 'include' });
+    if (res.ok) {
+      const billing = await res.json();
+      showBillingBanner(billing);
+    }
+  } catch (err) {}
+}
+
+// Check if already logged in
+async function checkAuth() {
+  try {
+    const res = await fetch('/api/bookings', { credentials: 'include' });
+    if (res.ok) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      loadData();
+      checkBillingSummary();
+    } else if (res.status === 401) {
+      // Not logged in - show login screen (default state is already shown)
+    }
+  } catch (err) {
+    // Network error - show login screen
+  }
+}
+
+checkAuth();
+
+// Auto-refresh every 30 seconds
+setInterval(() => {
+  loadData();
+  checkBillingSummary();
+}, 30000);
+
+// Logout function
+async function logout() {
+  await fetch('/api/logout', { method: 'POST', credentials: 'include' });
+  location.reload();
+}
+
+// Debug: Test API connection
+async function testAPI() {
+try {
+const res = await fetch('/api/bookings');
+console.log('API Test - Status:', res.status);
+const data = await res.json();
+console.log('API Test - Bookings count:', data.length);
+console.log('API Test - First booking:', data[0]);
+} catch(err) {
+console.error('API Test - Failed:', err);
+}
+}
+// Uncomment to test: testAPI();
+
+document.getElementById('editForm').addEventListener('submit', saveBooking);
+document.getElementById('confirmForm').addEventListener('submit', sendConfirmation);
+document.getElementById('editModal').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('editModal')) closeEditModal();
+});
+document.getElementById('deleteModal').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('deleteModal')) closeDeleteModal();
+});
+document.getElementById('confirmModal').addEventListener('click', (e) => {
+  if(e.target === document.getElementById('confirmModal')) closeConfirmModal();
+});
+</script>
+</body>
+</html>

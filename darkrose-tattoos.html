@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Rose Tattoos</title>
+<link rel="icon" href="logo.jpeg" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#0a0a0a;
+--dark:#141414;
+--card:#1e1e1e;
+--border:#2d1f1f;
+--crimson:#9B2A2A;
+--rose:#D04040;
+--gold:#D4A84A;
+--gold-light:#F0C84B;
+--cream:#F5EDE0;
+--muted:#a89080;
+--white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--cream);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+body.modal-open{overflow:hidden}
+
+/* WELCOME MODAL */
+.welcome-modal{position:fixed;inset:0;background:rgba(0,0,0,0.98);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;animation:fadeIn 0.5s ease}
+.welcome-modal.hidden{display:none}
+.welcome-content{background:var(--dark);border:1px solid var(--border);max-width:480px;width:100%;padding:2rem;text-align:center;position:relative;max-height:90vh;overflow-y:auto}
+.welcome-content::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--crimson),var(--gold),var(--crimson));opacity:0.6}
+.welcome-title{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--white);margin-bottom:1rem;line-height:1.2}
+.welcome-title span{color:var(--rose);font-style:italic}
+.welcome-text{font-size:0.95rem;line-height:1.75;color:var(--muted);margin-bottom:1.8rem;font-weight:300}
+.welcome-btn{display:inline-block;padding:0.8rem 2.5rem;background:var(--crimson);color:var(--cream);text-decoration:none;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;border:1px solid var(--rose);cursor:pointer;transition:all 0.3s}
+.welcome-btn:hover{background:var(--rose);transform:scale(1.02);box-shadow:0 8px 40px rgba(139,26,26,0.4)}
+.welcome-footer{font-size:0.65rem;letter-spacing:0.15em;color:var(--gold);margin-top:1.5rem;opacity:0.7}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(8,8,8,0.95),transparent)}
+.nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.2em;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:0.5rem}
+.nav-logo img{height:32px;width:auto;object-fit:contain}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;letter-spacing:0.12em;margin-left:2rem;transition:color 0.3s;text-transform:uppercase}
+.nav-links a:hover{color:var(--gold)}
+.nav-book{background:var(--crimson)!important;color:var(--cream)!important;padding:0.5rem 1.2rem;border:1px solid var(--rose)!important}
+
+   /* HERO */
+   #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:7rem 1.5rem 4rem}
+   .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,#1a1010 0%,var(--black) 60%);animation:heroPulse 8s ease-in-out infinite alternate}
+   .hero-nebula{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(139,26,26,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(212,168,74,0.06) 0%,transparent 40%),radial-gradient(ellipse at 50% 50%,rgba(208,64,64,0.05) 0%,transparent 60%);animation:nebulaPulse 20s ease-in-out infinite alternate}
+   .hero-stars-static{position:absolute;inset:0;background-image:radial-gradient(var(--white) 1px,transparent 1px);background-size:60px 60px;opacity:0.15}
+   .hero-stars-twinkle{position:absolute;inset:0;background-image:radial-gradient(var(--cream) 1.5px,transparent 1.5px);background-size:100px 100px;opacity:0.2;animation:twinkle 4s ease-in-out infinite}
+   .hero-stars-distant{position:absolute;inset:0;background-image:radial-gradient(var(--gold-light) 1px,transparent 1px);background-size:150px 150px;opacity:0.1;animation:starsFloat 40s linear infinite reverse}
+   .hero-shooting-stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+   .shooting-star{position:absolute;width:4px;height:4px;background:var(--gold-light);border-radius:50%;box-shadow:0 0 8px 3px var(--gold-light),0 0 16px 6px var(--gold),0 0 24px 9px rgba(212,168,74,0.4);animation:shootingStar 2s ease-out forwards}
+   .shooting-star::after{content:'';position:absolute;top:50%;right:0;width:100px;height:2px;background:linear-gradient(90deg,var(--gold-light),rgba(212,168,74,0.4),transparent);transform:translateY(-50%)}
+   .shooting-star.silver{background:#fff;box-shadow:0 0 8px 3px #fff,0 0 16px 6px rgba(255,255,255,0.6),0 0 24px 9px rgba(255,255,255,0.3);}
+   .shooting-star.silver::after{background:linear-gradient(90deg,#fff,rgba(255,255,255,0.3),transparent);}
+   .hero-rose{position:absolute;right:-5%;top:50%;transform:translateY(-50%);width:50vw;max-width:600px;opacity:0.15;pointer-events:none;animation:roseFloat 12s ease-in-out infinite,roseBreath 6s ease-in-out infinite}
+   .hero-content{position:relative;z-index:2;text-align:center;max-width:700px}
+.hero-badge{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.4em;color:var(--gold);text-transform:uppercase;margin-bottom:1.2rem;display:block;animation:fadeIn 1s ease 0.2s both}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:0.95;color:var(--white);margin-bottom:0.3rem;text-shadow:0 0 30px rgba(139,26,26,0.2)}
+.hero-title em{color:var(--rose);font-style:italic}
+.hero-sub{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.5em;color:var(--gold);text-transform:uppercase;margin:1.2rem 0 2.2rem;opacity:0.8}
+.hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:420px;margin:0 auto 2.5rem;font-weight:300}
+.btn-primary{display:inline-block;padding:0.9rem 2.5rem;background:var(--crimson);color:var(--cream);text-decoration:none;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;border:1px solid var(--rose);transition:all 0.3s;cursor:pointer}
+.btn-primary:hover{background:var(--rose);transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,57,43,0.4)}
+.btn-outline{display:inline-block;padding:0.9rem 2.5rem;background:transparent;color:var(--gold);text-decoration:none;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;border:1px solid var(--gold);transition:all 0.3s;margin-left:1rem;cursor:pointer}
+.btn-outline:hover{background:rgba(200,151,42,0.1)}
+.hero-stats{display:flex;justify-content:center;gap:3rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);display:block}
+.stat-label{font-size:0.7rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase;margin-top:0.3rem;display:block}
+
+/* DIVIDER */
+.divider{text-align:center;padding:1.5rem;color:var(--crimson);font-size:1.5rem;letter-spacing:0.5em}
+
+/* PORTFOLIO */
+#portfolio{padding:4rem 1.5rem;max-width:1200px;margin:0 auto}
+.section-label{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.5em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:0.8rem;text-align:center}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);text-align:center;color:var(--white);margin-bottom:0.6rem}
+.section-title em{color:var(--rose);font-style:italic}
+.section-desc{text-align:center;color:var(--muted);font-size:1rem;margin-bottom:3rem;font-weight:300}
+.portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+.design-card{background:var(--card);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform 0.3s,border-color 0.3s;position:relative}
+.design-card:hover{transform:translateY(-4px);border-color:var(--crimson)}
+.design-card:hover .card-overlay{opacity:1}
+.card-art{height:260px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#111}
+.card-art img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
+.design-card:hover .card-art img{transform:scale(1.05)}
+.card-overlay{position:absolute;inset:0;background:rgba(139,26,26,0.85);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s}
+.card-overlay-btn{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--white);border:1px solid rgba(255,255,255,0.5);padding:0.7rem 1.6rem;transition:background 0.2s}
+.card-overlay-btn:hover{background:rgba(255,255,255,0.15)}
+.card-info{padding:1rem 1.2rem 1.3rem}
+.card-tag{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:0.4rem}
+.card-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--white);margin-bottom:0.25rem}
+.card-price{font-size:0.85rem;color:var(--muted)}
+.card-book{display:block;width:100%;margin-top:0.8rem;padding:0.6rem;background:transparent;border:1px solid var(--border);color:var(--cream);font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.3s}
+.card-book:hover{background:var(--crimson);border-color:var(--rose)}
+
+/* BOOKING */
+#booking{padding:4rem 1.5rem;background:var(--dark);position:relative;overflow:hidden}
+#booking::before{content:'';position:absolute;top:-50%;left:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(139,26,26,0.08),transparent 70%);pointer-events:none}
+.booking-inner{max-width:640px;margin:0 auto;position:relative;z-index:2}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:2rem}
+.form-group{display:flex;flex-direction:column;gap:0.35rem}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.25em;color:var(--gold);text-transform:uppercase}
+.form-group input,.form-group select,.form-group textarea{background:#111;border:1px solid var(--border);color:var(--cream);padding:0.7rem 0.9rem;font-family:'Cormorant Garamond',serif;font-size:1rem;outline:none;transition:border-color 0.3s;width:100%;-webkit-appearance:none}
+.form-group select option{background:#111}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--crimson)}
+.form-group textarea{height:80px;resize:none}
+.form-submit{margin-top:1.2rem;text-align:center}
+.form-submit button{padding:0.9rem 3.5rem;background:var(--crimson);color:var(--cream);border:1px solid var(--rose);font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.3s;width:100%}
+.form-submit button:hover{background:var(--rose)}
+.form-note{font-size:0.8rem;color:var(--muted);text-align:center;margin-top:0.8rem}
+#form-success{display:none;text-align:center;padding:2.5rem;border:1px solid var(--crimson);background:rgba(139,26,26,0.1)}
+#form-success h3{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--white);margin-bottom:0.6rem}
+#form-success p{color:var(--muted);font-weight:300}
+
+/* MODAL */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:200;display:none;align-items:center;justify-content:center;padding:1.5rem}
+.modal-backdrop.active{display:flex}
+.modal{background:var(--dark);border:1px solid var(--border);max-width:500px;width:100%;padding:2.5rem;position:relative;max-height:85vh;overflow-y:auto}
+.modal-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--white)}
+.modal-design-preview{text-align:center;margin-bottom:1.2rem;padding:0.8rem;background:#111;border:1px solid var(--border)}
+.modal-design-preview img{max-width:100%;max-height:160px;object-fit:contain}
+.modal-design-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--rose);margin-top:0.4rem}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--border);padding:3rem 2rem 1.5rem}
+.footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2rem}
+.footer-brand{display:flex;flex-direction:column;gap:0.5rem}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;letter-spacing:0.2em;color:var(--gold)}
+.footer-tagline{color:var(--muted);font-size:0.9rem}
+.footer-location{color:var(--muted);font-size:0.85rem;opacity:0.7}
+.footer-column h4{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem}
+.footer-column a{display:block;color:var(--muted);text-decoration:none;font-size:0.9rem;margin-bottom:0.5rem;transition:color 0.3s}
+.footer-column a:hover{color:var(--cream)}
+.footer-column span{display:block;color:var(--muted);font-size:0.9rem;margin-bottom:0.4rem}
+.footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;text-align:center}
+.footer-bottom p{color:var(--muted);font-size:0.8rem;margin-bottom:0.3rem}
+.footer-legal{font-size:0.75rem;opacity:0.6}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--crimson);color:var(--white);padding:0.9rem 1.5rem;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.1em;z-index:300;transform:translateY(100px);opacity:0;transition:all 0.4s;border-left:3px solid var(--gold)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+   @keyframes heroPulse{0%{background:radial-gradient(ellipse at 60% 40%,#1a1010 0%,var(--black) 60%)}100%{background:radial-gradient(ellipse at 60% 40%,#1f1515 0%,var(--black) 60%)}}
+   @keyframes nebulaPulse{0%{opacity:0.7}100%{opacity:1}}
+   @keyframes roseFloat{0%,100%{transform:translateY(-50%) rotate(0deg);opacity:0.15}50%{transform:translateY(-52%) rotate(1deg);opacity:0.19}}
+   @keyframes roseBreath{0%,100%{opacity:0.15}50%{opacity:0.19}}
+   @keyframes particlesFloat{0%{background-position:0 0}100%{background-position:80px 80px}}
+   @keyframes starsFloat{0%{background-position:0 0}100%{background-position:150px 150px}}
+   @keyframes twinkle{0%,100%{opacity:0.3}50%{opacity:1}}
+   @keyframes shootingStar{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(-400px,200px) scale(0.3);opacity:0}}
+
+@media(max-width:768px){
+nav{padding:0.8rem 1.2rem}
+.nav-logo span{font-size:0.9rem}
+.nav-logo img{height:28px}
+.nav-links a{margin-left:1.5rem;font-size:0.8rem}
+.nav-book{padding:0.4rem 1rem;font-size:0.7rem}
+#hero{padding:6rem 1.2rem 3rem}
+.hero-rose{width:60vw;max-width:500px;opacity:0.12}
+.hero-stats{gap:1.5rem}
+.stat-num{font-size:1.6rem}
+#portfolio,#booking{padding:4rem 1.5rem}
+.portfolio-grid{grid-template-columns:1fr;gap:1.5rem}
+.card-art{height:260px}
+.form-grid{grid-template-columns:1fr}
+.footer-content{grid-template-columns:1fr;gap:2rem;text-align:center}
+footer{padding:2rem 1.2rem}
+.btn-outline{margin-left:0;margin-top:0.8rem;display:block;padding:0.8rem 2rem}
+.modal{padding:2rem}
+.welcome-content{padding:1.8rem;max-width:520px}
+.welcome-title{font-size:1.6rem}
+.welcome-text{font-size:0.9rem;line-height:1.7}
+.welcome-btn{padding:0.7rem 2rem;font-size:0.7rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Welcome Modal -->
+<div class="welcome-modal" id="welcomeModal">
+<div class="welcome-content">
+<h2 class="welcome-title">Welcome to <span>Dark Rose</span> Tattoos</h2>
+<p class="welcome-text">We specialize in custom blackwork, neotraditional, and gothic rose tattoos. Each piece is designed to be as unique as you are.</p>
+<button class="welcome-btn" onclick="closeWelcome()">Enter Gallery</button>
+<p class="welcome-footer">— EST. 2019 —</p>
+</div>
+</div>
+
+<!-- Navigation -->
+<nav>
+<a href="#hero" class="nav-logo">
+<img src="logo.jpeg" alt="Dark Rose Tattoos">
+</a>
+  <div class="nav-links">
+  <a href="#hero">Home</a>
+  <a href="about-us.html">About</a>
+  <a href="contact-us.html">Contact</a>
+  <a href="darkrose-tattoos.html#portfolio">Portfolio</a>
+  <a href="/admin" target="_blank">Admin</a>
+  <a href="#booking" class="nav-book">Book Now</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+ <section id="hero">
+ <div class="hero-bg"></div>
+ <div class="hero-particles"></div>
+ <div class="hero-stars"></div>
+ <div class="hero-shooting-stars" id="shootingStars"></div>
+ <svg class="hero-rose" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M100 20C100 20 80 50 80 80C80 110 100 140 100 160C100 140 120 110 120 80C120 50 100 20 100 20Z" fill="#8B1A1A"/>
+<path d="M100 50C100 50 90 65 90 85C90 105 100 125 100 140C100 125 110 105 110 85C110 65 100 50 100 50Z" fill="#C0392B"/>
+<path d="M100 170C100 170 70 190 65 220C60 250 80 280 100 290C120 280 140 250 135 220C130 190 100 170 100 170Z" fill="#1a0a0a" stroke="#8B1A1A" stroke-width="1"/>
+<path d="M100 160C100 160 85 180 80 210C75 240 95 270 100 280" stroke="#C0392B" stroke-width="2"/>
+<path d="M60 120C60 120 40 115 35 130C30 145 45 160 60 155" stroke="#8B1A1A" stroke-width="1.5"/>
+<path d="M140 120C140 120 160 115 165 130C170 145 155 160 140 155" stroke="#8B1A1A" stroke-width="1.5"/>
+<path d="M70 100C70 100 50 90 45 100C40 110 55 125 70 120" stroke="#8B1A1A" stroke-width="1"/>
+<path d="M130 100C130 100 150 90 155 100C160 110 145 125 130 120" stroke="#8B1A1A" stroke-width="1"/>
+<path d="M100 70C100 70 95 90 100 110C105 90 100 70 100 70Z" fill="#2a0808"/>
+</svg>
+<div class="hero-content">
+<span class="hero-badge">Custom Tattoo Studio</span>
+<h1 class="hero-title">Dark Rose <em>Tattoos</em></h1>
+<p class="hero-sub">Blackwork • Neo-Traditional • Gothic</p>
+<p class="hero-desc">Each design created uniquely for you. Using premium inks and strict sterilization protocols.</p>
+<div class="hero-ctas">
+<a href="#portfolio" class="btn-primary">View Portfolio</a>
+<a href="#booking" class="btn-outline">Book Appointment</a>
+</div>
+<div class="hero-stats">
+<div class="stat">
+<span class="stat-num">500+</span>
+<span class="stat-label">Designs</span>
+</div>
+<div class="stat">
+<span class="stat-num">8</span>
+<span class="stat-label">Years</span>
+</div>
+<div class="stat">
+<span class="stat-num">100%</span>
+<span class="stat-label">Custom</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Divider -->
+<p class="divider">— ✦ —</p>
+
+<!-- Portfolio Section -->
+<section id="portfolio">
+<span class="section-label">Our Work</span>
+<h2 class="section-title">Selected <em>Designs</em></h2>
+<p class="section-desc">Each tattoo is custom-designed for the client.</p>
+<div class="portfolio-grid" id="portfolioGrid"></div>
+</section>
+
+<!-- Divider -->
+<p class="divider">— ✦ —</p>
+
+<!-- Booking Section -->
+<section id="booking">
+<div class="booking-inner">
+<span class="section-label">Booking</span>
+<h2 class="section-title">Book Your <em>Session</em></h2>
+<p class="section-desc">Fill out the form below to request an appointment.</p>
+<form id="bookingForm">
+<div class="form-grid">
+<div class="form-group">
+<label for="name">Name</label>
+<input type="text" id="name" name="name" required>
+</div>
+<div class="form-group">
+<label for="phone">Phone</label>
+<input type="tel" id="phone" name="phone" required>
+</div>
+<div class="form-group">
+<label for="design">Design</label>
+<select id="design" name="design" required>
+<option value="">Select Design</option>
+</select>
+   </div>
+    <div class="form-group">
+    <label for="budget">Budget</label>
+<select id="budget" name="budget">
+<option value="">Select Budget</option>
+<option value="₹500-₹1,000">₹500 - ₹1,000</option>
+<option value="₹1,000-₹2,000">₹1,000 - ₹2,000</option>
+<option value="₹2,000-₹3,000">₹2,000 - ₹3,000</option>
+<option value="₹3,000+">₹3,000+</option>
+</select>
+</div>
+<div class="form-group">
+<label for="placement">Placement</label>
+<select id="placement" name="placement">
+<option value="">Select Placement</option>
+<option value="Forearm">Forearm</option>
+<option value="Upper Arm">Upper Arm</option>
+<option value="Bicep">Bicep</option>
+<option value="Shoulder">Shoulder</option>
+<option value="Back">Back</option>
+<option value="Chest">Chest</option>
+<option value="Leg">Leg</option>
+<option value="Ankle">Ankle</option>
+<option value="Wrist">Wrist</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div class="form-group full">
+<label for="notes">Notes</label>
+<textarea id="notes" name="notes" placeholder="Describe your tattoo idea..."></textarea>
+</div>
+</div>
+<div class="form-submit">
+<button type="submit">Request Booking</button>
+</div>
+<p class="form-note">We'll contact you within 24-48 hours to confirm.</p>
+</form>
+<div id="form-success">
+<h3>Request Submitted!</h3>
+<p>We'll be in touch soon to confirm your session.</p>
+</div>
+</div>
+</section>
+
+<!-- Footer -->
+<footer>
+<div class="footer-content">
+<div class="footer-brand">
+<span class="footer-logo">Dark Rose Tattoos</span>
+<p class="footer-tagline">Premium Custom Tattoo Studio</p>
+<p class="footer-location">✦ Gaya, Bihar, India ✦</p>
+</div>
+<div class="footer-column">
+<h4>Studio</h4>
+<a href="#hero">Home</a>
+<a href="#portfolio">Portfolio</a>
+<a href="#booking">Book Now</a>
+</div>
+<div class="footer-column">
+<h4>Connect</h4>
+<a href="#">Instagram</a>
+<a href="#">WhatsApp</a>
+<a href="tel:+91XXXXXXXXXX">Call</a>
+</div>
+<div class="footer-column">
+<h4>Hours</h4>
+<span>Mon – Sat: 11 AM – 9 PM</span>
+<span>Sunday: Closed</span>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 Dark Rose Tattoos. All rights reserved.</p>
+<p class="footer-legal">Strictly 18+ | Sterilized Equipment | Premium Inks</p>
+</div>
+</footer>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop" id="modalBackdrop">
+<div class="modal">
+<button class="modal-close" onclick="closeModal()">&times;</button>
+<div class="modal-design-preview">
+<img id="modalDesignImg" src="" alt="Design Preview">
+<p class="modal-design-name" id="modalDesignName"></p>
+</div>
+<form id="modalBookingForm">
+<div class="form-grid">
+<div class="form-group">
+<label for="modalName">Name</label>
+<input type="text" id="modalName" required>
+</div>
+<div class="form-group">
+<label for="modalPhone">Phone</label>
+<input type="tel" id="modalPhone" required>
+   </div>
+    <div class="form-group">
+    <label for="modalBudget">Budget</label>
+<select id="modalBudget">
+<option value="">Select Budget</option>
+<option value="₹500-₹1,000">₹500 - ₹1,000</option>
+<option value="₹1,000-₹2,000">₹1,000 - ₹2,000</option>
+<option value="₹2,000-₹3,000">₹2,000 - ₹3,000</option>
+<option value="₹3,000+">₹3,000+</option>
+</select>
+</div>
+<div class="form-group full">
+<label for="modalPlacement">Placement</label>
+<select id="modalPlacement">
+<option value="">Select Placement</option>
+<option value="Forearm">Forearm</option>
+<option value="Upper Arm">Upper Arm</option>
+<option value="Bicep">Bicep</option>
+<option value="Shoulder">Shoulder</option>
+<option value="Back">Back</option>
+<option value="Chest">Chest</option>
+<option value="Leg">Leg</option>
+<option value="Ankle">Ankle</option>
+<option value="Wrist">Wrist</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div class="form-group full">
+<label for="modalNotes">Notes</label>
+<textarea id="modalNotes"></textarea>
+</div>
+</div>
+<div class="form-submit">
+<button type="submit">Book This Design</button>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const designs = [
+{name:"Mahadev Nataraja",tag:"Blackwork · Divine Dance",price:"Starting ₹249/inch",img:"Assets/1.jpg"},
+{name:"Ardhanarishvara",tag:"Blackwork · Shiva-Shakti",price:"Starting ₹249/inch",img:"Assets/2.jpg"},
+{name:"Shiva with Trishula",tag:"Blackwork · Divine Weapon",price:"Starting ₹249/inch",img:"Assets/3.jpg"},
+{name:"Shiva Lingam",tag:"Dotwork · Sacred Symbol",price:"Starting ₹249/inch",img:"Assets/4.jpg"},
+{name:"Shiva as Pashupati",tag:"Blackwork · Lord of Beasts",price:"Starting ₹249/inch",img:"Assets/5.jpg"},
+{name:"Shiva's Damaru",tag:"Fine Line · Divine Drum",price:"Starting ₹249/inch",img:"Assets/6.jpg"},
+{name:"Shiva with Nandi",tag:"Blackwork · Divine Bull",price:"Starting ₹249/inch",img:"Assets/7.jpg"},
+{name:"Shiva's Third Eye",tag:"Dotwork · Spiritual Awakening",price:"Starting ₹249/inch",img:"Assets/8.jpg"},
+{name:"Shiva with Ganga",tag:"Blackwork · Holy River",price:"Starting ₹249/inch",img:"Assets/9.jpg"},
+{name:"Shiva's Crescent Moon",tag:"Fine Line · Chandra Shekhara",price:"Starting ₹249/inch",img:"Assets/10.jpg"},
+{name:"Shiva as Rudra",tag:"Blackwork · Fierce Form",price:"Starting ₹249/inch",img:"Assets/11.jpg"},
+{name:"Shiva in Meditation",tag:"Dotwork · Yogeshwara",price:"Starting ₹249/inch",img:"Assets/12.jpg"},
+{name:"Shiva's Snake Ornament",tag:"Blackwork · Vasuki",price:"Starting ₹249/inch",img:"Assets/13.jpg"},
+{name:"Shiva's Tiger Skin",tag:"Blackwork · Vastra",price:"Starting ₹249/inch",img:"Assets/14.jpg"},
+{name:"Shiva's Ash Covered",tag:"Blackwork · Vibhuti",price:"Starting ₹249/inch",img:"Assets/15.jpg"},
+{name:"Shiva's Trinetra",tag:"Dotwork · Three Eyes",price:"Starting ₹249/inch",img:"Assets/16.jpg"},
+{name:"Shiva's Jata (Hair)",tag:"Blackwork · Divine Locks",price:"Starting ₹249/inch",img:"Assets/17.jpg"},
+{name:"Shiva with Kamandal",tag:"Blackwork · Water Pot",price:"Starting ₹249/inch",img:"Assets/18.jpg"},
+{name:"Shiva's Rosary (Rudraksha)",tag:"Dotwork · Sacred Beads",price:"Starting ₹249/inch",img:"Assets/19.jpg"},
+{name:"Shiva as Bholenath",tag:"Blackwork · Innocent Lord",price:"Starting ₹249/inch",img:"Assets/20.jpg"},
+{name:"Shiva's Cosmic Dance",tag:"Blackwork · Tandava",price:"Starting ₹249/inch",img:"Assets/21.jpg"},
+{name:"Shiva's Abode Kailash",tag:"Blackwork · Divine Mountain",price:"Starting ₹249/inch",img:"Assets/22.jpg"},
+{name:"Shiva with Parvati",tag:"Blackwork · Divine Couple",price:"Starting ₹249/inch",img:"Assets/23.jpg"},
+{name:"Shiva's Ganas",tag:"Blackwork · Divine Attendants",price:"Starting ₹249/inch",img:"Assets/24.jpg"},
+{name:"Shiva's Trishula & Damaru",tag:"Blackwork · Divine Instruments",price:"Starting ₹249/inch",img:"Assets/25.jpg"},
+{name:"Shiva's Blue Throat",tag:"Blackwork · Neelkantha",price:"Starting ₹249/inch",img:"Assets/26.jpg"},
+{name:"Shiva's Tiger Skin Seat",tag:"Blackwork · Asher",price:"Starting ₹249/inch",img:"Assets/27.jpg"},
+{name:"Shiva's Lotus Feet",tag:"Dotwork · Charanamrita",price:"Starting ₹249/inch",img:"Assets/28.jpg"},
+{name:"Shiva's Sacred Thread",tag:"Fine Line · Yajnopavita",price:"Starting ₹249/inch",img:"Assets/29.jpg"},
+{name:"Shiva's Flame Hair",tag:"Blackwork · Jwala Jata",price:"Starting ₹249/inch",img:"Assets/30.jpg"}
+];
+
+const grid = document.getElementById('portfolioGrid');
+designs.forEach((d,i) => {
+grid.innerHTML += `<div class="design-card" data-name="${d.name}" data-img="${d.img}">
+<div class="card-art">
+<img src="${d.img}" alt="${d.name} Tattoo Design">
+<div class="card-overlay"><span class="card-overlay-btn">Book This Design</span></div>
+</div>
+<div class="card-info">
+<div class="card-tag">${d.tag}</div>
+<div class="card-name">${d.name}</div>
+<div class="card-price">${d.price}</div>
+<button class="card-book">Book This Design</button>
+</div>
+</div>`;
+});
+
+grid.addEventListener('click', (e) => {
+  const card = e.target.closest('.design-card');
+  if (card) {
+    openModal(card.dataset.name, card.dataset.img);
+  }
+});
+
+const designSelect = document.getElementById('design');
+designs.forEach(d => {
+designSelect.innerHTML += `<option value="${d.name}">${d.name} - ${d.price}</option>`;
+});
+
+let activeDesign = '';
+function openModal(name, imgUrl) {
+activeDesign = name;
+document.getElementById('modalDesignName').textContent = name;
+document.getElementById('modalDesignImg').src = imgUrl;
+document.getElementById('modalBackdrop').classList.add('active');
+document.body.classList.add('modal-open');
+}
+function closeModal() {
+document.getElementById('modalBackdrop').classList.remove('active');
+document.body.classList.remove('modal-open');
+}
+document.getElementById('modalBackdrop').addEventListener('click', e => {
+if(e.target === document.getElementById('modalBackdrop')) closeModal();
+});
+
+function showToast(msg) {
+const t = document.getElementById('toast');
+t.textContent = msg;
+t.classList.add('show');
+setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+async function sendToBackend(data) {
+try {
+const res = await fetch('/api/booking', {
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify(data)
+});
+const result = await res.json();
+if (!res.ok) {
+if (result.errors) {
+return { success: false, message: result.errors.join(', ') };
+}
+if (result.existingBooking) {
+return { success: false, message: `${result.error} (${result.existingBooking.name} - ${result.existingBooking.design})` };
+}
+return { success: false, message: result.error || 'Booking failed' };
+}
+return { success: true, message: result.message };
+} catch (e) {
+return { success: false, message: 'Network error' };
+}
+}
+
+async function submitModal() {
+const n = document.getElementById('modalName').value.trim();
+const p = document.getElementById('modalPhone').value.trim();
+if(!n||!p){showToast('Please fill Name & Phone');return;}
+const res = await sendToBackend({
+name:n,
+phone:p,
+design:activeDesign,
+budget:document.getElementById('modalBudget').value,
+placement:document.getElementById('modalPlacement').value,
+notes:document.getElementById('modalNotes').value
+});
+closeModal();
+if (!res.success) {
+showToast(res.message);
+return;
+}
+showToast(`Booking received for ${activeDesign}! We'll contact you soon.`);
+}
+
+async function submitBooking(e) {
+e.preventDefault();
+const n = document.getElementById('name').value.trim();
+const p = document.getElementById('phone').value.trim();
+const d = document.getElementById('design').value;
+if(!n||!p||!d){showToast('Please fill all required fields');return;}
+const res = await sendToBackend({
+name:n,
+phone:p,
+design:d,
+budget:document.getElementById('budget').value,
+placement:document.getElementById('placement').value,
+notes:document.getElementById('notes').value
+});
+if (!res.success) {
+showToast(res.message);
+return;
+}
+document.getElementById('bookingForm').style.display = 'none';
+document.getElementById('form-success').style.display = 'block';
+showToast('Booking request submitted! We\'ll contact you soon.');
+}
+
+ document.getElementById('bookingForm').addEventListener('submit', submitBooking);
+ document.getElementById('modalBookingForm').addEventListener('submit', function(e) {
+   e.preventDefault();
+   submitModal();
+   document.getElementById('modalBookingForm').reset();
+ });
+
+ // Shooting stars effect
+ function createShootingStar() {
+   const container = document.getElementById('shootingStars');
+   if(!container) return;
+   
+   const star = document.createElement('div');
+   star.className = 'shooting-star';
+   star.style.top = Math.random() * 50 + '%';
+   star.style.left = Math.random() * 50 + 50 + '%';
+   star.style.animationDelay = Math.random() * 0.5 + 's';
+   container.appendChild(star);
+   
+   setTimeout(() => star.remove(), 3000);
+ }
+
+ // Create shooting stars periodically
+ setInterval(createShootingStar, 4000);
+ setTimeout(createShootingStar, 2000);
+
+ function closeWelcome() {
+   document.getElementById('welcomeModal').classList.add('hidden');
+   document.body.classList.remove('modal-open');
+ }
+</script>
+</body>
+</html>

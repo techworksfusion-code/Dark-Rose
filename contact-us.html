@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us - Dark Rose Tattoos</title>
+<link rel="icon" href="logo.jpeg" type="image/x-icon">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--black:#0a0a0a;
+--dark:#141414;
+--card:#1e1e1e;
+--border:#2d1f1f;
+--crimson:#9B2A2A;
+--rose:#D04040;
+--gold:#D4A84A;
+--gold-light:#F0C84B;
+--cream:#F5EDE0;
+--muted:#a89080;
+--white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--cream);font-family:'Cormorant Garamond',serif;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(8,8,8,0.95),transparent)}
+.nav-logo{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.2em;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:0.5rem}
+.nav-logo img{height:32px;width:auto;object-fit:contain}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.85rem;letter-spacing:0.12em;margin-left:2rem;transition:color 0.3s;text-transform:uppercase}
+.nav-links a:hover{color:var(--gold)}
+.nav-book{background:var(--crimson)!important;color:var(--cream)!important;padding:0.5rem 1.2rem;border:1px solid var(--rose)!important}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:7rem 1.5rem 4rem}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,#1a1010 0%,var(--black) 60%)}
+.hero-nebula{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(139,26,26,0.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(212,168,74,0.06) 0%,transparent 40%),radial-gradient(ellipse at 50% 50%,rgba(208,64,64,0.05) 0%,transparent 60%)}
+.hero-stars-static{position:absolute;inset:0;background-image:radial-gradient(var(--white) 1px,transparent 1px);background-size:60px 60px;opacity:0.15}
+.hero-stars-twinkle{position:absolute;inset:0;background-image:radial-gradient(var(--cream) 1.5px,transparent 1.5px);background-size:100px 100px;opacity:0.2;animation:twinkle 4s ease-in-out infinite}
+.hero-stars-distant{position:absolute;inset:0;background-image:radial-gradient(var(--gold-light) 1px,transparent 1px);background-size:150px 150px;opacity:0.1;animation:starsFloat 40s linear infinite reverse}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:700px}
+.hero-badge{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.4em;color:var(--gold);text-transform:uppercase;margin-bottom:1.2rem;display:block}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:0.95;color:var(--white);margin-bottom:0.3rem;text-shadow:0 0 30px rgba(139,26,26,0.2)}
+.hero-title em{color:var(--rose);font-style:italic}
+.hero-sub{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.5em;color:var(--gold);text-transform:uppercase;margin:1.2rem 0 2.2rem;opacity:0.8}
+.hero-desc{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:500px;margin:0 auto 2.5rem;font-weight:300}
+.btn-primary{display:inline-block;padding:0.9rem 2.5rem;background:var(--crimson);color:var(--cream);text-decoration:none;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;border:1px solid var(--rose);transition:all 0.3s;cursor:pointer}
+.btn-primary:hover{background:var(--rose);transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,57,43,0.4)}
+
+/* DIVIDER */
+.divider{text-align:center;padding:1.5rem;color:var(--crimson);font-size:1.5rem;letter-spacing:0.5em}
+
+/* CONTACT SECTION */
+#contact{padding:6rem 1.5rem;max-width:800px;margin:0 auto}
+.section-label{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.5em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:0.8rem;text-align:center}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.5rem);text-align:center;color:var(--white);margin-bottom:0.6rem}
+.section-title em{color:var(--rose);font-style:italic}
+.section-desc{text-align:center;color:var(--muted);font-size:1rem;margin-bottom:3rem;font-weight:300}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2rem}
+
+/* Contact Info */
+.contact-info{background:var(--card);border:1px solid var(--border);padding:2rem}
+.contact-info h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--white);margin-bottom:1.2rem}
+.contact-info p{font-size:1rem;line-height:1.8;color:var(--muted);margin-bottom:1.5rem}
+.contact-item{display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem}
+.contact-icon{font-size:1.5rem}
+.contact-text span{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;display:block}
+.contact-text a{color:var(--cream);text-decoration:none;font-size:0.95rem;transition:color 0.3s}
+.contact-text a:hover{color:var(--gold)}
+.social-links{display:flex;gap:0.8rem;margin-top:1.5rem}
+.social-link{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border);color:var(--cream);text-decoration:none;transition:all 0.3s}
+.social-link:hover{border-color:var(--crimson);background:rgba(139,26,26,0.2);color:var(--crimson)}
+
+/* Contact Form */
+.contact-form{background:var(--card);border:1px solid var(--border);padding:2rem}
+.form-group{margin-bottom:1.2rem}
+.form-group label{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.25em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:0.5rem}
+.form-group input,.form-group textarea,.form-group select{background:#111;border:1px solid var(--border);color:var(--cream);padding:0.7rem 0.9rem;font-family:'Cormorant Garamond',serif;font-size:1rem;outline:none;transition:border-color 0.3s;width:100%}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--crimson)}
+.form-group textarea{height:120px;resize:vertical}
+.form-submit{text-align:center;margin-top:1.5rem}
+.form-submit button{padding:0.9rem 3.5rem;background:var(--crimson);color:var(--cream);border:1px solid var(--rose);font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.3s}
+.form-submit button:hover{background:var(--rose)}
+.success-message{display:none;text-align:center;padding:2rem;border:1px solid var(--crimson);background:rgba(139,26,26,0.1);margin-top:1.5rem}
+.success-message.show{display:block}
+.success-message h3{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--white);margin-bottom:0.5rem}
+
+/* MAP PLACEHOLDER */
+.map-placeholder{width:100%;height:300px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);margin-top:2rem}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--border);padding:3rem 2rem 1.5rem}
+.footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:2rem}
+.footer-brand{display:flex;flex-direction:column;gap:0.5rem}
+.footer-logo{font-family:'Cinzel',serif;font-size:1.1rem;letter-spacing:0.2em;color:var(--gold)}
+.footer-tagline{color:var(--muted);font-size:0.9rem}
+.footer-location{color:var(--muted);font-size:0.85rem;opacity:0.7}
+.footer-column h4{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem}
+.footer-column a{display:block;color:var(--muted);text-decoration:none;font-size:0.9rem;margin-bottom:0.5rem;transition:color 0.3s}
+.footer-column a:hover{color:var(--cream)}
+.footer-column span{display:block;color:var(--muted);font-size:0.9rem;margin-bottom:0.4rem}
+.footer-bottom{border-top:1px solid var(--border);padding-top:1.5rem;text-align:center}
+.footer-bottom p{color:var(--muted);font-size:0.8rem;margin-bottom:0.3rem}
+.footer-legal{font-size:0.75rem;opacity:0.6}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes starsFloat{0%{background-position:0 0}100%{background-position:150px 150px}}
+@keyframes twinkle{0%,100%{opacity:0.3}50%{opacity:1}}
+
+@media(max-width:768px){
+nav{padding:0.8rem 1.2rem}
+.nav-logo img{height:28px}
+.nav-links a{margin-left:1.5rem;font-size:0.8rem}
+#hero{padding:6rem 1.2rem 3rem}
+.contact-grid{grid-template-columns:1fr}
+.footer-content{grid-template-columns:1fr;gap:2rem;text-align:center}
+footer{padding:2rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+<a href="darkrose-tattoos.html" class="nav-logo">
+<img src="logo.jpeg" alt="Dark Rose Tattoos">
+</a>
+  <div class="nav-links">
+  <a href="darkrose-tattoos.html">Home</a>
+  <a href="about-us.html">About</a>
+  <a href="#contact">Contact</a>
+  <a href="/admin" target="_blank">Admin</a>
+  <a href="darkrose-tattoos.html#portfolio">Portfolio</a>
+  <a href="darkrose-tattoos.html#booking" class="nav-book">Book Now</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="hero">
+<div class="hero-bg"></div>
+<div class="hero-nebula"></div>
+<div class="hero-stars-static"></div>
+<div class="hero-stars-twinkle"></div>
+<div class="hero-stars-distant"></div>
+<div class="hero-content">
+<span class="hero-badge">Get In Touch</span>
+<h1 class="hero-title">Contact <em>Dark Rose</em></h1>
+<p class="hero-sub">We'd Love to Hear From You</p>
+<p class="hero-desc">Have questions about our tattoos, booking process, or want to discuss a custom design? Reach out—we're here to help.</p>
+<div class="hero-ctas">
+<a href="#contact-form" class="btn-primary">Send a Message</a>
+</div>
+</div>
+</section>
+
+<!-- Divider -->
+<p class="divider">— ✦ —</p>
+
+<!-- Contact Section -->
+<section id="contact">
+<div id="contact-form">
+<span class="section-label">Contact Us</span>
+<h2 class="section-title">Let's Start a <em>Conversation</em></h2>
+<p class="section-desc">Fill out the form below and we'll get back to you within 24-48 hours.</p>
+
+<div class="contact-grid">
+<!-- Contact Info -->
+<div class="contact-info">
+<h3>Studio Information</h3>
+<p>Visit us at our studio in Gaya, Bihar, or reach out through any of the channels below. Walk-ins welcome during business hours.</p>
+
+<div class="contact-item">
+<div class="contact-icon">📍</div>
+<div class="contact-text">
+<span>Studio Location</span>
+ Bypass Bihar - Opposite Vijay Laddu Bhandar, Gaya Ji
+</div>
+</div>
+
+<div class="contact-item">
+<div class="contact-icon">📞</div>
+<div class="contact-text">
+<span>Phone</span>
+<a href="tel:+91 7619150323">+91 7619150323</a>
+</div>
+</div>
+
+<div class="contact-item">
+<div class="contact-icon">✉️</div>
+<div class="contact-text">
+<span>Email</span>
+<a href="mailto:darkrosetattoos@email.com">darkrosetattoos@email.com</a>
+</div>
+</div>
+
+<div class="contact-item">
+<div class="contact-icon">🕐</div>
+<div class="contact-text">
+<span>Studio Hours</span>
+Mon – Sat: 11 AM – 9 PM<br>Sunday: Closed
+</div>
+</div>
+
+<h3 style="margin-top:2rem">Follow Us</h3>
+<div class="social-links">
+<a href="https://www.instagram.com/darkrosetattoogaya/" class="social-link" title="Instagram">IG</a>
+<a href="https://wa.me/917619150323" class="social-link" title="WhatsApp">WA</a>
+</div>
+</div>
+
+<!-- Contact Form -->
+<div class="contact-form">
+<form id="contactForm">
+<div class="form-group">
+<label for="name">Name *</label>
+<input type="text" id="name" name="name" required>
+</div>
+<div class="form-group">
+<label for="email">Email *</label>
+<input type="email" id="email" name="email" required>
+</div>
+<div class="form-group">
+<label for="subject">Subject</label>
+<select id="subject" name="subject">
+<option value="">Select Subject</option>
+<option value="General Inquiry">General Inquiry</option>
+<option value="Booking Question">Booking Question</option>
+<option value="Custom Design">Custom Design</option>
+<option value="Pricing">Pricing</option>
+<option value="Other">Other</option>
+</select>
+</div>
+<div class="form-group">
+<label for="message">Message *</label>
+<textarea id="message" name="message" placeholder="Tell us about your tattoo idea or question..." required></textarea>
+</div>
+<div class="form-submit">
+<button type="submit">Send Message</button>
+</div>
+<div id="successMessage" class="success-message">
+<h3>Message Sent!</h3>
+<p>We'll be in touch with you shortly.</p>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Map Placeholder -->
+<div class="map-placeholder">
+<img src="artist.jpg" alt="Artist" style="width:100%;height:100%;object-fit:cover">
+</div>
+</section>
+
+<!-- Footer -->
+<footer>
+<div class="footer-content">
+<div class="footer-brand">
+<span class="footer-logo">Dark Rose Tattoos</span>
+<p class="footer-tagline">Premium Custom Tattoo Studio</p>
+<p class="footer-location">✦ Gaya, Bihar, India ✦</p>
+</div>
+<div class="footer-column">
+<h4>Studio</h4>
+<a href="darkrose-tattoos.html">Home</a>
+<a href="about-us.html">About</a>
+<a href="#contact">Contact</a>
+<a href="darkrose-tattoos.html#portfolio">Portfolio</a>
+</div>
+<div class="footer-column">
+<h4>Connect</h4>
+<a href="#">Instagram</a>
+<a href="#">WhatsApp</a>
+<a href="tel:+91 76191 50323">Call</a>
+</div>
+<div class="footer-column">
+<h4>Hours</h4>
+<span>Mon – Sat: 11 AM – 9 PM</span>
+<span>Sunday: Closed</span>
+</div>
+</div>
+<div class="footer-bottom">
+<p>© 2024 Dark Rose Tattoos. All rights reserved.</p>
+<p class="footer-legal">Strictly 18+ | Sterilized Equipment | Premium Inks</p>
+</div>
+</footer>
+
+<script>
+const form = document.getElementById('contactForm');
+const successMsg = document.getElementById('successMessage');
+
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+
+const name = document.getElementById('name').value.trim();
+const email = document.getElementById('email').value.trim();
+const subject = document.getElementById('subject').value;
+const message = document.getElementById('message').value.trim();
+
+if(!name || !email || !message) {
+  alert('Please fill all required fields');
+  return;
+}
+
+// Send to server
+try {
+  const response = await fetch('/api/contact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, email, subject, message })
+  });
+
+  if(response.ok) {
+    form.style.display = 'none';
+    successMsg.classList.add('show');
+  } else {
+    alert('Something went wrong. Please try again.');
+  }
+} catch(error) {
+  alert('Failed to send message. Please try again later.');
+}
+});
+</script>
+
+</body>
+</html>
